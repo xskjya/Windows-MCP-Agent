@@ -38,7 +38,7 @@ Windows-MCP-Agent 是基于 Windows-MCP 的强大自动化代理智能体，在�
 - Windows 11  
 
 ## 🎥 Demos
-<地址>
+<assets/demo.mp4>
 
 
 ## ✨ Key Features
