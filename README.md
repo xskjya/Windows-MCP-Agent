@@ -79,25 +79,20 @@ Windows-MCP中windows工具作为Windows-MCP-Agent的一种类型工具集合,�
 ---
 
 ## 🛠️MCP Tools
-
-1. #### **Windows相关工具**
-   - `Click-Tool`: Click on the screen at the given coordinates.
-   - `Type-Tool`: Type text on an element (optionally clears existing text).
-   - `Clipboard-Tool`: Copy or paste using the system clipboard.
-   - `Scroll-Tool`: Scroll vertically or horizontally on the window or specific regions.
-   - `Drag-Tool`: Drag from one point to another.
-   - `Move-Tool`: Move mouse pointer.
-   - `Shortcut-Tool`: Press keyboard shortcuts (`Ctrl+c`, `Alt+Tab`, etc).
-   - `Key-Tool`: Press a single key.
-   - `Wait-Tool`: Pause for a defined duration.
-   - `State-Tool`: Combined snapshot of default language, browser, active apps and interactive, textual and scrollable elements along with screenshot of the desktop.
-   - `Resize-Tool`: Used to change the window size or location of an app.
-   - `Launch-Tool`: To launch an application from the start menu.
-   - `Shell-Tool`: To execute PowerShell commands.
-   - `Scrape-Tool`: To scrape the entire webpage for information.
-
-2. 其他工具待补充.......
-
+- `Click-Tool`: Click on the screen at the given coordinates.
+- `Type-Tool`: Type text on an element (optionally clears existing text).
+- `Clipboard-Tool`: Copy or paste using the system clipboard.
+- `Scroll-Tool`: Scroll vertically or horizontally on the window or specific regions.
+- `Drag-Tool`: Drag from one point to another.
+- `Move-Tool`: Move mouse pointer.
+- `Shortcut-Tool`: Press keyboard shortcuts (`Ctrl+c`, `Alt+Tab`, etc).
+- `Key-Tool`: Press a single key.
+- `Wait-Tool`: Pause for a defined duration.
+- `State-Tool`: Combined snapshot of default language, browser, active apps and interactive, textual and scrollable elements along with screenshot of the desktop.
+- `Resize-Tool`: Used to change the window size or location of an app.
+- `Launch-Tool`: To launch an application from the start menu.
+- `Shell-Tool`: To execute PowerShell commands.
+- `Scrape-Tool`: To scrape the entire webpage for information.
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=xskjya/Windows-MCP-Agent&type=Date)](https://www.star-history.com/#CursorTouch/Windows-MCP&Date)
