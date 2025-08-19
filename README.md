@@ -28,6 +28,7 @@ Windows-MCP-Agent 是基于 Windows-MCP 的强大自动化代理智能体，在�
 - 优化了项目结构
 - 封装了工具与LLM之间的调用接口
 - 拓展了工具的接口实现
+- 封装了工具代理类：见文档docs
 
 ### Supported Operating Systems
 - Windows 7

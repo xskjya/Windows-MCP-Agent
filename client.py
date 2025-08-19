@@ -1,76 +1,9 @@
 import asyncio
 import base64
-from typing import Dict, Any, Optional
 from fastmcp import Client
-from fastmcp.exceptions import ToolError
-from src.agent.prompt.service import Prompt
-from src.agent.service import OllamaToolAgent
 
-
-# ========== 扩展 OllamaToolAgent，支持 MCP 工具调用 ==========
-class WindowsMcpOllamaToolAgent(OllamaToolAgent):
-    def __init__(self, **args):
-        """
-        初始化 Agent，继承自 OllamaToolAgent
-        - client: MCP 客户端实例
-        """
-        super().__init__(**args)
-        self.client: Optional[Client] = None  # 默认 MCP 客户端为空
-
-    async def decide_action(self, user_input: str) -> Dict[str, Any]:
-        """
-        调用 LLM 判断是否需要工具
-        返回: JSON 对象 {"tool_name": str|None, "tool_args": dict, "answer": str|None}
-        """
-        # 构建 Prompt
-        prompt = Prompt.action_prompt(tools=self.tools, user_input=user_input)
-        print("【prompt】\n", prompt)
-
-        # 调用 LLM (同步接口 → 异步包装，避免阻塞 asyncio loop)
-        loop = asyncio.get_running_loop()
-        llm_output = await loop.run_in_executor(None, self.llm.invoke, prompt)
-        print("【thinking】", llm_output)
-
-        # 将 LLM 输出解析为 JSON
-        tool = self.parse(llm_output)
-        print("【parsed tool json】", tool)
-        return tool
-
-    async def act(self, tool: Dict[str, Any], user_input: str):
-        """
-        根据 tool JSON 执行动作
-        - 如果 tool_name 存在 → 调用 MCP 工具
-        - 否则 → 返回大语言模型的自然语言回答
-        """
-        if tool and tool.get("tool_name"):
-            return await self.execute(tool)
-        else:
-            # 回退为普通对话
-            loop = asyncio.get_running_loop()
-            return await loop.run_in_executor(None, self.llm.invoke, user_input)
-
-    async def execute(self, tool: dict):
-        """
-        执行 MCP 工具
-        """
-        if not tool:
-            print("[INFO] tool is None, skip execution")
-            return None
-        return await self.calling_tool(tool)
-
-    async def calling_tool(self, tool: dict):
-        """
-        调用 MCP 工具
-        """
-        try:
-            async with self.client:
-                result = await self.client.call_tool(
-                    tool["tool_name"], {**tool["tool_args"]}
-                )
-                return result
-        except ToolError as e:
-            print(f"[ERROR] Tool call failed: {e}")
-            return {"error": str(e), "fallback": True}
+from src.agent import OllamaToolAgent
+from src.agent.tool_agent.ApiToolAgent import APIToolAgent
 
 
 # ========== 通用结果处理 ==========
@@ -123,11 +56,24 @@ async def main():
                 "desc": tool.description,
                 "params": tool.inputSchema or {}
             }
+    ########################模型示例####################################
+    # 1.初始化 OllamaToolAgent： 继承GenericToolAgent
+    # agent = OllamaToolAgent(
+    #     model_name="qwen3:1.7b",
+    #     tools= tools_info,
+    #     client= client,
+    #     # 额外ollama的参数
+    # )
 
-    # 初始化 Agent
-    agent = WindowsMcpOllamaToolAgent(model_name="qwen3:1.7b")
-    agent.client = client
-    agent.tools = tools_info
+    # 2.API或函数调用
+    # 定义一个简单 API 函数
+    def my_api(prompt: str) -> str:
+        return '{"tool_name": "Launch-Tool", "tool_args": {"name": "chrome"}}'
+    agent = APIToolAgent(
+        api_callable=my_api,
+        tools= tools_info,
+        client= client,
+    )
 
     # 循环交互
     while True:
