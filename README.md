@@ -1,6 +1,6 @@
 <div align="center">
 
-  <h1>🪟 Windows-MCP</h1>
+  <h1>🪟 Windows-MCP-Agent</h1>
 
   <a href="https://github.com/CursorTouch/Windows-MCP/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
@@ -20,134 +20,91 @@
 
 <br>
 
-**Windows MCP** is a lightweight, open-source project that enables seamless integration between AI agents and the Windows operating system. Acting as an MCP server bridges the gap between LLMs and the Windows operating system, allowing agents to perform tasks such as **file navigation, application control, UI interaction, QA testing,** and more.
+Windows-MCP-Agent 是基于 Windows-MCP 的强大自动化代理智能体，在保留其核心特性的同时优化了项目结构，并提供更强的扩展能力。通过将 Windows 端工具统一整理为集合，并支持用户自定义扩展（如 Web 浏览器集成），它全面提升了大语言模型在 Windows 系统中的自动化 易用性、可扩展性与可维护性。
+
+<br>
+感谢[Windows-MCP]([GitHub - CursorTouch/Windows-MCP: Lightweight MCP Server for Computer Use in Windows](https://github.com/CursorTouch/Windows-MCP))和[Windows-Use](https://github.com/CursorTouch/Windows-Use)!
 
 ## Updates
 
-- Try out 🪟[Windows-Use](https://github.com/CursorTouch/Windows-Use)!!, an agent built using Windows-MCP.
-- Windows-MCP is now featured as Desktop Extension in `Claude Desktop`.
+- 优化了项目结构
+- 封装了工具与LLM之间的调用接口
+- 拓展了工具的接口实现
 
 ### Supported Operating Systems
-
 - Windows 7
 - Windows 8, 8.1
 - Windows 10
 - Windows 11  
 
 ## 🎥 Demos
+<地址>
 
-<https://github.com/user-attachments/assets/d0e7ed1d-6189-4de6-838a-5ef8e1cad54e>
-
-<https://github.com/user-attachments/assets/d2b372dc-8d00-4d71-9677-4c64f5987485>
 
 ## ✨ Key Features
-
-- **Seamless Windows Integration**  
-  Interacts natively with Windows UI elements, opens apps, controls windows, simulates user input, and more.
-
-- **Use Any LLM (Vision Optional)**
-   Unlike many automation tools, Windows MCP doesn't rely on any traditional computer vision techniques or specific fine-tuned models; it works with any LLMs, reducing complexity and setup time.
-
-- **Rich Toolset for UI Automation**  
-  Includes tools for basic keyboard, mouse operation and capturing window/UI state.
-
-- **Lightweight & Open-Source**  
-  Minimal dependencies and easy setup with full source code available under MIT license.
-
-- **Customizable & Extendable**  
-  Easily adapt or extend tools to suit your unique automation or AI integration needs.
-
-- **Real-Time Interaction**  
-  Typical latency between actions (e.g., from one mouse click to the next) ranges from **0.7 to 2.5 secs**, and may slightly vary based on the number of active applications and system load, also the inferencing speed of the llm.
+- **对于Windows工具继承了Windows-MCP的所有特性**
+Windows-MCP中windows工具作为Windows-MCP-Agent的一种类型工具集合,对其代码进行整理，并未修改。
+- **可拓展式工具设计**
+按照工具的类型进行工具集合的管理，用于自行拓展其他工具的实现。
+- **支持任意 LLM(比如api调用、ollama等)**
+相比于Windows-MCP的支持任意 LLM, 还是难以进行上手实现,Windows-MCP-Agent真正带通了tool与LLM的鸿沟，对其进行了封装简化，任意LLM都可用(支持api调用等任何形式)
+- **丰富的 UI 自动化工具集**
+包括Windows-MCP可用的所有Windows端工具集在内的所有，后续会持续更新的其他工具集。
+- **轻量开源较少**
+依赖最，易于部署，完整源代码遵循 MIT 协议开源。
+- **可定制与可扩展**
+用户可轻松调整或扩展工具，以满足独特的自动化或 AI 集成需求。
 
 ### Prerequisites
-
 - Python 3.13+
-- Anthropic Claude Desktop app or other MCP Clients
-- UV (Package Manager) from Astra, install with `pip install uv`
-- DXT (Desktop Extension) from Antropic, install with `npm install -g @anthropic-ai/dxt`
-- `English` as the default language in Windows or disable the `Launch-Tool` and `Resize-Tool` in the MCP Server for Windows with other languages.
+- 支持任何LLM能够理解的语言，但在操作具体事项时，English作为默认语言(比如windows的具体应用名称等)
+
 
 ## 🏁 Getting Started
 
-### Gemini CLI
+### 1.克隆项目
 
-1. Navigate to `%USERPROFILE%/.gemini` in File Explorer and open `settings.json`.
+1. 克隆项目：`https://github.com/xskjya/Windows-MCP-Agent.git`，`cd Windows-MCP-Agent `.
 
-2. Add the `windows-mcp` config in the `settings.json` and save it.
+2. 安装相关依赖：`pip install -r requirements.txt`.
 
-```json
-{
-  "theme": "Default",
-  ...
-//MCP Server Config
-  "mcpServers": {
-    "windows-mcp": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "<path to the windows-mcp directory>",
-        "run",
-        "main.py"
-      ]
-    }
-  }
-}
-```
+3. 运行MCP服务器.注意：涉及到windows工具需要管理员运行
 
-3. Rerun Gemini CLI in terminal. Enjoy 🥳
+   `python server.py`
 
-### Claude Desktop
+4. 运行MCP客户端.
 
-1. Clone the repository.
-
-```shell
-git clone https://github.com/CursorTouch/Windows-MCP.git
-cd Windows-MCP
-```
-
-2. Build Desktop Extension `DXT`:
-
-```shell
-npx @anthropic-ai/dxt pack
-```
-
-3. Open Claude Desktop:
-
-Go to Claude Desktop: Settings->Extensions->Install Extension (locate the `.dxt` file)-> Install
-
-Finally Enjoy 🥳.
-
-For additional Claude Desktop integration troubleshooting, see the [MCP documentation](https://modelcontextprotocol.io/quickstart/server#claude-for-desktop-integration-issues). The documentation includes helpful tips for checking logs and resolving common issues.
+   `python client.py`
 
 ---
 
 ## 🛠️MCP Tools
 
-Claude can access the following tools to interact with Windows:
+1. #### **Windows相关工具**
+   - `Click-Tool`: Click on the screen at the given coordinates.
+   - `Type-Tool`: Type text on an element (optionally clears existing text).
+   - `Clipboard-Tool`: Copy or paste using the system clipboard.
+   - `Scroll-Tool`: Scroll vertically or horizontally on the window or specific regions.
+   - `Drag-Tool`: Drag from one point to another.
+   - `Move-Tool`: Move mouse pointer.
+   - `Shortcut-Tool`: Press keyboard shortcuts (`Ctrl+c`, `Alt+Tab`, etc).
+   - `Key-Tool`: Press a single key.
+   - `Wait-Tool`: Pause for a defined duration.
+   - `State-Tool`: Combined snapshot of default language, browser, active apps and interactive, textual and scrollable elements along with screenshot of the desktop.
+   - `Resize-Tool`: Used to change the window size or location of an app.
+   - `Launch-Tool`: To launch an application from the start menu.
+   - `Shell-Tool`: To execute PowerShell commands.
+   - `Scrape-Tool`: To scrape the entire webpage for information.
 
-- `Click-Tool`: Click on the screen at the given coordinates.
-- `Type-Tool`: Type text on an element (optionally clears existing text).
-- `Clipboard-Tool`: Copy or paste using the system clipboard.
-- `Scroll-Tool`: Scroll vertically or horizontally on the window or specific regions.
-- `Drag-Tool`: Drag from one point to another.
-- `Move-Tool`: Move mouse pointer.
-- `Shortcut-Tool`: Press keyboard shortcuts (`Ctrl+c`, `Alt+Tab`, etc).
-- `Key-Tool`: Press a single key.
-- `Wait-Tool`: Pause for a defined duration.
-- `State-Tool`: Combined snapshot of default language, browser, active apps and interactive, textual and scrollable elements along with screenshot of the desktop.
-- `Resize-Tool`: Used to change the window size or location of an app.
-- `Launch-Tool`: To launch an application from the start menu.
-- `Shell-Tool`: To execute PowerShell commands.
-- `Scrape-Tool`: To scrape the entire webpage for information.
+2. 其他工具待补充.......
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=CursorTouch/Windows-MCP&type=Date)](https://www.star-history.com/#CursorTouch/Windows-MCP&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=xskjya/Windows-MCP-Agent&type=Date)](https://www.star-history.com/#CursorTouch/Windows-MCP&Date)
 
 ## ⚠️Caution
 
-This MCP interacts directly with your Windows operating system to perform actions. Use with caution and avoid deploying it in environments where such risks cannot be tolerated.
+*  Windows-MCP 会直接与您的 Windows 操作系统交互以执行操作。请谨慎使用，并避免在无法承受此类风险的环境中部署。
 
 ## 📝 Limitations
 
@@ -157,21 +114,3 @@ This MCP interacts directly with your Windows operating system to perform action
 ## 🪪License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝Contributing
-
-Contributions are welcome! Please see [CONTRIBUTING](CONTRIBUTING) for setup instructions and development guidelines.
-
-Made with ❤️ by [Jeomon George](https://github.com/Jeomon)
-
-## Citation
-
-```bibtex
-@software{
-  author       = {George, Jeomon},
-  title        = {Windows-MCP: Lightweight open-source project for integrating LLM agents with Windows},
-  year         = {2024},
-  publisher    = {GitHub},
-  url={https://github.com/CursorTouch/Windows-MCP}
-}
-```
