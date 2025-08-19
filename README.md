@@ -23,7 +23,7 @@
 Windows-MCP-Agent 是基于 Windows-MCP 的强大自动化代理智能体，在保留其核心特性的同时优化了项目结构，并提供更强的扩展能力。通过将 Windows 端工具统一整理为集合，并支持用户自定义扩展（如 Web 浏览器集成），它全面提升了大语言模型在 Windows 系统中的自动化 易用性、可扩展性与可维护性。
 
 <br>
-感谢[Windows-MCP]([GitHub - CursorTouch/Windows-MCP: Lightweight MCP Server for Computer Use in Windows](https://github.com/CursorTouch/Windows-MCP))和[Windows-Use](https://github.com/CursorTouch/Windows-Use)!
+特别感谢开源项目 [Windows-MCP](https://github.com/CursorTouch/Windows-MCP) 与 [Windows-Use](https://github.com/CursorTouch/Windows-Use) 的支持！
 
 ## Updates
 
