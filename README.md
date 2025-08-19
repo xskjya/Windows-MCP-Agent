@@ -74,7 +74,51 @@ Windows-MCP中windows工具作为Windows-MCP-Agent的一种类型工具集合,�
 4. 运行MCP客户端.
 
    `python client.py`
-
+ * 示例：
+   ```python
+   async def main():
+       # 初始化 MCP 客户端
+       client = Client("server.py")
+   
+       # 获取 MCP 提供的工具信息，整理成描述字典
+       tools_info = {}
+       async with client:
+           tools = await client.list_tools()
+           for tool in tools:
+               tools_info[tool.name] = {
+                   "desc": tool.description,
+                   "params": tool.inputSchema or {}
+               }
+       ########################模型示例####################################
+       # 1.初始化 OllamaToolAgent： 继承GenericToolAgent
+       # agent = OllamaToolAgent(
+       #     model_name="qwen3:1.7b",
+       #     tools= tools_info,
+       #     client= client,
+       #     # 额外ollama的参数
+       # )
+   
+       # 2.API或函数调用
+       # 定义一个简单 API 函数
+       def my_api(prompt: str) -> str:
+           return '{"tool_name": "Launch-Tool", "tool_args": {"name": "chrome"}}'
+       agent = APIToolAgent(
+           api_callable=my_api,
+           tools= tools_info,
+           client= client,
+       )
+   
+       # 循环交互
+       while True:
+           query = input("user input: ")
+           tool = await agent.decide_action(query)  # 判断动作
+           result = await agent.act(tool, query)    # 执行动作
+           handler_result(result)                   # 处理结果
+   
+   
+   if __name__ == "__main__":
+       asyncio.run(main())
+   ```
 ---
 
 ## 🛠️MCP Tools
